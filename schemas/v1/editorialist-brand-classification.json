@@ -29,8 +29,7 @@
           "Clothing",
           "Other"
         ]
-      },
-      "uniqueItems": true
+      }
     },
     "preference": {
       "type": "string",
