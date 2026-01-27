@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Editorialist Brand Classification",
+  "description": "Schema for categorizing fashion brands and estimating Editorialist stylist preference",
+  "type": "object",
+  "required": [
+    "brand",
+    "category",
+    "preference",
+    "certainty_score",
+    "notes"
+  ],
+  "properties": {
+    "brand": {
+      "type": "string",
+      "description": "Input brand name as provided by the user",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "category": {
+      "type": "string",
+      "description": "Primary product category for the brand",
+      "enum": [
+        "Watches and Jewelry",
+        "Shoes",
+        "Clothing",
+        "Other"
+      ]
+    },
+    "preference": {
+      "type": "string",
+      "description": "Estimated Editorialist stylist preference",
+      "enum": [
+        "Strong preference",
+        "Preference",
+        "Neutral",
+        "Avoid",
+        "Strong avoid"
+      ]
+    },
+    "certainty_score": {
+      "type": "integer",
+      "description": "Certainty score from 0 (no confidence) to 100 (high confidence)",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "notes": {
+      "type": "string",
+      "description": "Brief notes only if there is uncertainty about category or preference; otherwise empty string",
+      "maxLength": 500
+    }
+  },
+  "additionalProperties": false
+}
