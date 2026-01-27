@@ -18,14 +18,19 @@
       "maxLength": 200
     },
     "category": {
-      "type": "string",
-      "description": "Primary product category for the brand",
-      "enum": [
-        "Watches and Jewelry",
-        "Shoes",
-        "Clothing",
-        "Other"
-      ]
+      "type": "array",
+      "description": "One or more product categories for the brand",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "Watches and Jewelry",
+          "Shoes",
+          "Clothing",
+          "Other"
+        ]
+      },
+      "uniqueItems": true
     },
     "preference": {
       "type": "string",
