@@ -41,7 +41,5 @@ When working with this repository, follow these guidelines:
 - **No assumptions**: Don't add implied deadlines, inferred assignments, or assumed context
 
 ### Data Formatting
-- **Names**: Use first names only (e.g., "Sarah", "Haje") not full names
-- **Meeting context**: Haje is the default meeting organizer/requester
 - **Booleans over strings**: Prefer `is_fashion_related: boolean` over status strings
 - **Confidence scores**: Use 0-100 scale for classification confidence
