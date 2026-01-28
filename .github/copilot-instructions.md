@@ -37,6 +37,11 @@ schemas/
 4. **Flag ambiguity** - mark as "Unclear" rather than guess
 5. **Meeting context** - Haje is the default organizer/requester
 
+### Workflow
+- **After completing work**: Always ask if user wants to commit to Git
+- **If yes**: Write a concise commit message and push changes
+- **Commit format**: Brief, descriptive message of what was added/changed
+
 ### Quick Reference
 - Base URL: `https://raw.githubusercontent.com/haje-editorialist/hajes-top-secret-json-schemas/main/schemas/<name>/v1.json`
 - Check README.md for full design preferences
