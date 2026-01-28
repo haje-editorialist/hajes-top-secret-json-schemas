@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Meeting Action Items",
+  "description": "Extracted action items from a meeting transcript",
+  "type": "object",
+  "properties": {
+    "meeting_date": {
+      "type": "string",
+      "description": "The date of the meeting in YYYY-MM-DD format"
+    },
+    "participants": {
+      "type": "array",
+      "description": "List of meeting participants ordered by who spoke the most",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Participant name"
+          },
+          "speaking_count": {
+            "type": "integer",
+            "description": "Approximate number of times this person spoke"
+          }
+        },
+        "required": ["name"]
+      }
+    },
+    "action_items": {
+      "type": "array",
+      "description": "List of action items from the meeting",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "pattern": "^AI - (FU - )?[^-].+$",
+            "description": "Action item title. REQUIRED FORMAT: 'AI - [FU - ]<up to 10 word summary>'. Include 'FU - ' (follow-up) prefix ONLY if assigned to someone else. Omit 'FU - ' if assigned to Haje. Example: 'AI - FU - Contact client about Q1 budget' or 'AI - Update presentation slides'."
+          },
+          "assigned_to": {
+            "type": "string",
+            "pattern": "^[A-Z][a-z]+(?: [A-Z][a-z]+)?$",
+            "description": "Person responsible for this action item - FIRST NAME ONLY (e.g., 'Sarah', 'Marcus', 'Haje'). Use 'Haje' if assigned to the meeting organizer."
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Brief summary of the action item (up to 10 words)"
+          },
+          "description": {
+            "type": "string",
+            "description": "Full description of the action item (up to 1 paragraph)"
+          },
+          "mentioned_in_context": {
+            "type": "string",
+            "description": "The time or context in the meeting where this was discussed"
+          },
+          "discussion_point": {
+            "type": "string",
+            "description": "Optional discussion point to offload to a future 1x1 meeting. Use this when the action item requires further discussion or alignment in a one-on-one setting."
+          }
+        },
+        "required": ["title", "assigned_to", "summary", "description"]
+      }
+    }
+  },
+  "required": ["meeting_date", "participants", "action_items"]
+}
