@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Variety Fashion Article Classification",
+  "description": "Classification of Variety magazine articles for fashion relevance to Editorialist",
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string",
+      "description": "The URL of the original article"
+    },
+    "title": {
+      "type": "string",
+      "description": "The title of the article"
+    },
+    "is_fashion_related": {
+      "type": "boolean",
+      "description": "Whether the movie/TV content is fashion-related (fashion central to plot, characters work in fashion and it's central, fashion documentaries, fashion reality shows)"
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Confidence score from 0-100 indicating how certain the classification is"
+    },
+    "relevance_summary": {
+      "type": "string",
+      "description": "Brief explanation of why this content is or isn't relevant to Editorialist's fashion focus. Include specific details about fashion elements, designers, fashion icons, or plot relevance."
+    },
+    "fashion_elements": {
+      "type": "array",
+      "description": "List of specific fashion elements mentioned (brands, designers, fashion icons, fashion events, etc.)",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "url",
+    "title",
+    "is_fashion_related",
+    "confidence_score",
+    "relevance_summary"
+  ]
+}

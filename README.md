@@ -25,6 +25,7 @@ When working with this repository, follow these guidelines:
 ### Schema Organization
 - **Folder structure**: `schemas/<schema-name>/v1.json` not `schemas/v1/<schema-name>.json`
 - **Versioning**: Each schema versions independently (v1.json, v2.json, etc.)
+- **CRITICAL - Always upversion**: NEVER edit an existing schema file. Always create a new version (v2.json, v3.json, etc.) for ANY change, no matter how small
 - **Backward compatibility**: Copy schemas to new structure instead of moving to avoid breaking existing integrations
 
 ### Prompts
@@ -41,5 +42,8 @@ When working with this repository, follow these guidelines:
 - **No assumptions**: Don't add implied deadlines, inferred assignments, or assumed context
 
 ### Data Formatting
+- **Names**: Use first names only (e.g., "Sarah", "Haje") not full names
+- **Meeting context**: Haje is the default meeting organizer/requester
 - **Booleans over strings**: Prefer `is_fashion_related: boolean` over status strings
 - **Confidence scores**: Use 0-100 scale for classification confidence
+- **OpenAI compatibility**: Avoid unsupported JSON Schema features like `"format": "uri"` - use plain `"type": "string"` instead
