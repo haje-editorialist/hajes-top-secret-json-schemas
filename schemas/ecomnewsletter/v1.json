@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ecommerce Newsletter Schema",
+  "description": "Schema for AI-generated ecommerce newsletter content at the intersection of AI and ecommerce",
+  "type": "object",
+  "required": [
+    "subjectLine",
+    "teaser",
+    "introduction",
+    "tags",
+    "linkedinIntroduction"
+  ],
+  "properties": {
+    "subjectLine": {
+      "type": "string",
+      "description": "Short, punchy subject line in sentence case that teases the core idea",
+      "minLength": 5,
+      "maxLength": 100
+    },
+    "teaser": {
+      "type": "string",
+      "description": "Single sentence for preview text that doesn't repeat the subject line; should be enticing and emotionally resonant",
+      "minLength": 10,
+      "maxLength": 150
+    },
+    "introduction": {
+      "type": "object",
+      "description": "Two-paragraph introduction welcoming readers",
+      "required": ["paragraph1", "paragraph2"],
+      "properties": {
+        "paragraph1": {
+          "type": "string",
+          "description": "First paragraph (3-5 sentences) summarizing key highlights in conversational tone",
+          "minLength": 50
+        },
+        "paragraph2": {
+          "type": "string",
+          "description": "Second paragraph (3-5 sentences) continuing the overview of why this edition matters",
+          "minLength": 50
+        }
+      },
+      "additionalProperties": false
+    },
+    "tags": {
+      "type": "array",
+      "description": "5 tags, categories, and topics for promotion",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 50
+      }
+    },
+    "linkedinIntroduction": {
+      "type": "object",
+      "description": "LinkedIn introduction in the style of Haje Kamps from TechCrunch",
+      "required": ["paragraph1", "paragraph2"],
+      "properties": {
+        "paragraph1": {
+          "type": "string",
+          "description": "First spicy paragraph with TechCrunch-style commentary",
+          "minLength": 50
+        },
+        "paragraph2": {
+          "type": "string",
+          "description": "Second spicy paragraph with sharp insights and personality",
+          "minLength": 50
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

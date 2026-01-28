@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Editorialist Brand Classification",
+  "description": "Schema for categorizing fashion brands and estimating Editorialist stylist preference",
+  "type": "object",
+  "required": [
+    "brand",
+    "watches",
+    "jewelry",
+    "shoes",
+    "clothing",
+    "bags",
+    "beauty",
+    "other",
+    "preference",
+    "certainty_score",
+    "notes"
+  ],
+  "properties": {
+    "brand": {
+      "type": "string",
+      "description": "Input brand name as provided by the user",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "watches": {
+      "type": "boolean",
+      "description": "True if the brand produces watches"
+    },
+    "jewelry": {
+      "type": "boolean",
+      "description": "True if the brand produces jewelry"
+    },
+    "shoes": {
+      "type": "boolean",
+      "description": "True if the brand produces shoes"
+    },
+    "clothing": {
+      "type": "boolean",
+      "description": "True if the brand produces clothing"
+    },
+    "bags": {
+      "type": "boolean",
+      "description": "True if the brand produces bags"
+    },
+    "beauty": {
+      "type": "boolean",
+      "description": "True if the brand produces beauty products"
+    },
+    "other": {
+      "type": "boolean",
+      "description": "True if the brand produces other fashion items"
+    },
+    "preference": {
+      "type": "string",
+      "description": "Estimated Editorialist stylist preference",
+      "enum": [
+        "Strong preference",
+        "Preference",
+        "Neutral",
+        "Avoid",
+        "Strong avoid"
+      ]
+    },
+    "certainty_score": {
+      "type": "integer",
+      "description": "Certainty score from 0 (no confidence) to 100 (high confidence)",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "notes": {
+      "type": "string",
+      "description": "Brief notes only if there is uncertainty about category or preference; otherwise empty string",
+      "maxLength": 500
+    }
+  },
+  "additionalProperties": false
+}
