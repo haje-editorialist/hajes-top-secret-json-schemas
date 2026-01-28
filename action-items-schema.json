@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Meeting Action Items",
+  "description": "Extracted action items from a meeting transcript",
+  "type": "object",
+  "properties": {
+    "meeting_date": {
+      "type": "string",
+      "description": "The date of the meeting in YYYY-MM-DD format"
+    },
+    "participants": {
+      "type": "array",
+      "description": "List of meeting participants ordered by who spoke the most",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Participant name"
+          },
+          "speaking_count": {
+            "type": "integer",
+            "description": "Approximate number of times this person spoke"
+          }
+        },
+        "required": ["name"]
+      }
+    },
+    "action_items": {
+      "type": "array",
+      "description": "List of action items from the meeting",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Action item title. Format: 'AI - [FU - ]<up to 10 word summary>'. Use 'FU - ' prefix only if assigned to someone else, not if assigned to the requester."
+          },
+          "assigned_to": {
+            "type": "string",
+            "description": "Person responsible for this action item, or 'Self' if assigned to the meeting transcript requester"
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Brief summary of the action item (up to 10 words)"
+          },
+          "description": {
+            "type": "string",
+            "description": "Full description of the action item (up to 1 paragraph)"
+          },
+          "mentioned_in_context": {
+            "type": "string",
+            "description": "The time or context in the meeting where this was discussed"
+          }
+        },
+        "required": ["title", "assigned_to", "summary", "description"]
+      }
+    }
+  },
+  "required": ["meeting_date", "participants", "action_items"]
+}
