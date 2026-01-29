@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RSS Fashion Article Classification",
+  "description": "Classification of RSS feed articles for fashion relevance to Editorialist",
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string",
+      "description": "The URL of the original article (required for tracking and linking)"
+    },
+    "title": {
+      "type": "string",
+      "description": "The title of the article"
+    },
+    "publication": {
+      "type": "string",
+      "description": "The name of the publication that wrote the article (e.g., 'Variety', 'The Hollywood Reporter', etc.)"
+    },
+    "content_name": {
+      "type": "string",
+      "description": "The name of the movie, TV show, or other content being discussed in the article"
+    },
+    "content_type": {
+      "type": "string",
+      "description": "The type of content (e.g., 'movie', 'tv show', 'documentary', 'reality show', 'live event', 'miniseries', etc.)"
+    },
+    "is_fashion_related": {
+      "type": "boolean",
+      "description": "Whether the movie/TV content is fashion-related (fashion central to plot, characters work in fashion and it's central, fashion documentaries, fashion reality shows)"
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Confidence score from 0-100 indicating how certain the classification is"
+    },
+    "relevance_summary": {
+      "type": "string",
+      "description": "Brief explanation of why this content is or isn't relevant to Editorialist's fashion focus. Include specific details about fashion elements, designers, fashion icons, or plot relevance."
+    },
+    "fashion_elements": {
+      "type": "array",
+      "description": "List of specific fashion elements mentioned (brands, designers, fashion icons, fashion events, etc.)",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "url",
+    "title",
+    "publication",
+    "content_name",
+    "content_type",
+    "is_fashion_related",
+    "confidence_score",
+    "relevance_summary"
+  ]
+}
