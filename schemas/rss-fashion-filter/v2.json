@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RSS Fashion Filter",
+  "description": "Simple binary filter to determine if an article should be processed further for fashion relevance",
+  "type": "object",
+  "properties": {
+    "should_process": {
+      "type": "boolean",
+      "description": "TRUE if the content is clearly about fashion and should be processed further. FALSE otherwise."
+    }
+  },
+  "required": [
+    "should_process"
+  ]
+}
