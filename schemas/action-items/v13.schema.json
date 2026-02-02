@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Meeting Action Items",
+  "description": "Action items extracted from meeting transcript dialogue. Identifies explicit and implicit commitments made by speakers.",
+  "type": "object",
+  "properties": {
+    "action_item_count": {
+      "type": "integer",
+      "description": "Total number of action items found in the transcript",
+      "minimum": 0
+    },
+    "meeting_date": {
+      "type": "string",
+      "description": "Meeting date in YYYY-MM-DD format, or 'UNKNOWN' if not stated in the transcript",
+      "pattern": "^(\\d{4}-\\d{2}-\\d{2}|UNKNOWN)$"
+    },
+    "participants": {
+      "type": "array",
+      "description": "Participants ordered by speaking frequency based ONLY on transcript dialogue",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Participant name"
+          },
+          "speaking_count": {
+            "type": "integer",
+            "description": "Approximate number of speaking turns in the transcript"
+          }
+        },
+        "required": ["name"]
+      }
+    },
+    "action_items": {
+      "type": "array",
+      "description": "Action items extracted from transcript dialogue. Includes explicit commitments ('I will', 'I'll') and clear conditional agreements ('I can', 'I'll do X if Y').",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "pattern": "^AI - (FU - )?[^-].+$",
+            "description": "REQUIRED FORMAT: 'AI - [FU - ]<up to 10 word summary>'. Use 'FU - ' prefix if assigned to someone other than Haje."
+          },
+          "assigned_to": {
+            "type": "string",
+            "description": "First name only, or 'Unclear - <explanation>'"
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Concise summary of the action (up to 10 words)"
+          },
+          "description": {
+            "type": "string",
+            "description": "The exact commitment from the transcript or close paraphrase"
+          },
+          "discussion_point": {
+            "type": "string",
+            "description": "Topic for future 1:1 discussion. 2-3 sentences. Start with '(as discussed in [meeting name])'"
+          },
+          "slack_message": {
+            "type": "string",
+            "description": "2-3 sentence friendly Slack reminder with action, deadline, and context. Do NOT include the person's name."
+          },
+          "mentioned_in_context": {
+            "type": "string",
+            "description": "Timestamp or dialogue excerpt showing where the action item appears"
+          }
+        },
+        "required": ["title", "assigned_to", "summary", "description", "discussion_point", "slack_message"]
+      }
+    }
+  },
+  "required": ["action_item_count", "meeting_date", "participants", "action_items"]
+}
