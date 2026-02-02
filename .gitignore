@@ -4,3 +4,4 @@ action-items-prompt.md
 *-prompt.md
 schemas/*/prompts.md
 schemas/*/*.md
+schemas/*/*.markdown

@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Meeting Action Items",
-  "description": "Action items extracted from meeting transcript dialogue. Identifies explicit and implicit commitments made by speakers.",
+  "description": "Action items extracted from meeting transcript dialogue. Identifies explicit commitments made by speakers.",
   "type": "object",
   "properties": {
     "action_item_count": {
@@ -34,7 +34,7 @@
     },
     "action_items": {
       "type": "array",
-      "description": "Action items extracted from transcript dialogue. Includes explicit commitments ('I will', 'I'll') and clear conditional agreements ('I can', 'I'll do X if Y').",
+      "description": "Action items extracted from transcript dialogue. Includes all explicit commitments ('I will', 'I'll', 'I'm going to') and accepted delegations.",
       "items": {
         "type": "object",
         "properties": {
