@@ -5,3 +5,5 @@ action-items-prompt.md
 schemas/*/prompts.md
 schemas/*/*.md
 schemas/*/*.markdown
+.DS_Store
+schemas/.DS_Store
