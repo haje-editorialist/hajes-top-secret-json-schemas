@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Calendar Descriptions",
+  "description": "Generate a cleaned event headline and body, plus HR sensitivity classification",
+  "type": "object",
+  "properties": {
+    "headline": {
+      "type": "string",
+      "description": "Final event headline",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "body": {
+      "type": "string",
+      "description": "Final event body",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "sensitive": {
+      "type": "boolean",
+      "description": "True if the event content might be HR sensitive, otherwise false"
+    },
+    "confidence": {
+      "type": "integer",
+      "description": "Confidence score from 0 (no confidence) to 100 (high confidence) about HR sensitivity",
+      "minimum": 0,
+      "maximum": 100
+    }
+  },
+  "required": [
+    "headline",
+    "body",
+    "sensitive",
+    "confidence"
+  ],
+  "additionalProperties": false
+}
