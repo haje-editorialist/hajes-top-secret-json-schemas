@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EmailToActionItem",
+  "description": "Extract the key action and summary details from an email",
+  "type": "object",
+  "properties": {
+    "action_summary": {
+      "type": "string",
+      "description": "A 5-10 word summary of what needs to be done",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^\\S+(?:\\s+\\S+){4,9}$"
+    },
+    "sender_name": {
+      "type": "string",
+      "description": "First name of the person sending the email",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[A-Za-z][A-Za-z'-]{0,79}$"
+    },
+    "email_summary": {
+      "type": "string",
+      "description": "Single-paragraph summary of the email",
+      "minLength": 1,
+      "maxLength": 2000,
+      "pattern": "^[^\\r\\n]+$"
+    }
+  },
+  "required": [
+    "action_summary",
+    "sender_name",
+    "email_summary"
+  ],
+  "additionalProperties": false
+}
