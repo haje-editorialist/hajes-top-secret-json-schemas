@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "News Categorizer",
+  "description": "Classify a text input into one primary news category",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "Primary category for the input text",
+      "enum": [
+        "trends",
+        "celebrity",
+        "fashion",
+        "beauty",
+        "other"
+      ]
+    },
+    "other_category": {
+      "type": "string",
+      "description": "If category is 'other', provide one single-word fallback category; otherwise use an empty string",
+      "maxLength": 40,
+      "pattern": "^[A-Za-z0-9-]*$"
+    }
+  },
+  "required": [
+    "category",
+    "other_category"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "category": {
+            "const": "other"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "other_category": {
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9-]+$"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "other_category": {
+            "maxLength": 0
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}
