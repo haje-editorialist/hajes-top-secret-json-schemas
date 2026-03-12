@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "News Categorizer",
+  "description": "Classify a text input into one primary news category and summarize the core topic",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "Primary category for the input text",
+      "enum": [
+        "trends",
+        "celebrity",
+        "fashion",
+        "beauty",
+        "other"
+      ]
+    },
+    "other_category": {
+      "type": "string",
+      "description": "Single-word fallback category when category is 'other'; otherwise use an empty string",
+      "maxLength": 40,
+      "pattern": "^[A-Za-z0-9-]*$"
+    },
+    "summary": {
+      "type": "string",
+      "description": "A 5-10 word summary of the article's main trend, topic, or focus",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^\\S+(?:\\s+\\S+){4,9}$"
+    }
+  },
+  "required": [
+    "category",
+    "other_category",
+    "summary"
+  ],
+  "additionalProperties": false
+}
