@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Automated SEO Requirements v2",
+  "description": "Generate a fashion editorial SEO keyword cluster and metadata set from an article topic",
+  "type": "object",
+  "properties": {
+    "primary_keyword": {
+      "type": "string",
+      "description": "One primary keyword phrase that best captures the core fashion search query",
+      "minLength": 3,
+      "maxLength": 80
+    },
+    "primary_related_keyword": {
+      "type": "string",
+      "description": "One closely related keyword phrase with adjacent but distinct search value",
+      "minLength": 3,
+      "maxLength": 80
+    },
+    "secondary_keywords_explicit": {
+      "type": "array",
+      "description": "Two secondary keywords that should appear verbatim in the article body",
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 80
+      },
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "secondary_keywords_implicit": {
+      "type": "array",
+      "description": "Six semantically related supporting phrases that do not need to appear verbatim",
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 100
+      },
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true
+    },
+    "search_intents": {
+      "type": "array",
+      "description": "Eight broader reader intents or semantic themes the article should satisfy",
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 120
+      },
+      "minItems": 8,
+      "maxItems": 8,
+      "uniqueItems": true
+    },
+    "meta_title_options": {
+      "type": "array",
+      "description": "Two editorial and SEO-aware meta title options",
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "maxLength": 80
+      },
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "draft_meta_descriptions": {
+      "type": "array",
+      "description": "Two polished meta description options written in editorial language",
+      "items": {
+        "type": "string",
+        "minLength": 50,
+        "maxLength": 200
+      },
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "slug_recommendation": {
+      "type": "string",
+      "description": "One concise slug beginning with /fashion/",
+      "minLength": 10,
+      "maxLength": 120,
+      "pattern": "^/fashion/[a-z0-9]+(?:-[a-z0-9]+)*$"
+    }
+  },
+  "required": [
+    "primary_keyword",
+    "primary_related_keyword",
+    "secondary_keywords_explicit",
+    "secondary_keywords_implicit",
+    "search_intents",
+    "meta_title_options",
+    "draft_meta_descriptions",
+    "slug_recommendation"
+  ],
+  "additionalProperties": false
+}
