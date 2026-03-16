@@ -9,3 +9,4 @@ schemas/*/*.markdown
 # macOS
 **/.DS_Store
 .ds_store
+schemas/.DS_Store
