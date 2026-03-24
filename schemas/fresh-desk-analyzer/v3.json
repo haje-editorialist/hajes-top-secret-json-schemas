@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Fresh Desk Analyzer",
+  "description": "Extract tracking numbers, order numbers, and generate a summary from customer support tickets",
+  "type": "object",
+  "properties": {
+    "tracking_number_found": {
+      "type": "boolean",
+      "description": "Whether any tracking numbers were found in the ticket"
+    },
+    "tracking_numbers": {
+      "type": "array",
+      "description": "Tracking numbers found in the ticket",
+      "items": {
+        "type": "string"
+      }
+    },
+    "order_number_found": {
+      "type": "boolean",
+      "description": "Whether any order numbers were found in the ticket"
+    },
+    "order_numbers": {
+      "type": "array",
+      "description": "Order numbers found in the ticket",
+      "items": {
+        "type": "string"
+      }
+    },
+    "summary": {
+      "type": "string",
+      "description": "A one paragraph summary of the support ticket starting with 'The customer'"
+    }
+  },
+  "required": [
+    "tracking_number_found",
+    "tracking_numbers",
+    "order_number_found",
+    "order_numbers",
+    "summary"
+  ],
+  "additionalProperties": false
+}
