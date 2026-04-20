@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Freshdesk Agent Analyzer",
+  "description": "Evaluate a customer support agent's performance across six dimensions based on a full conversation transcript, with explicit handling for merged-ticket context.",
+  "type": "object",
+  "properties": {
+    "analysis_context": {
+      "type": "object",
+      "description": "Context flags that help interpret the scores.",
+      "properties": {
+        "ticket_was_merged": {
+          "type": "boolean",
+          "description": "True when the transcript explicitly indicates this ticket was merged into another ticket or thread."
+        },
+        "merge_only_interaction": {
+          "type": "boolean",
+          "description": "True when the transcript is mostly merge/system-routing activity with little or no agent-customer handling to evaluate."
+        }
+      },
+      "required": ["ticket_was_merged", "merge_only_interaction"]
+    },
+    "problem_resolution": {
+      "type": "object",
+      "description": "Was the customer's actual issue identified and resolved? Were there unresolved questions or assumptions made?",
+      "properties": {
+        "score": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = issue not resolved or badly misunderstood, 5 = fully resolved with no loose ends"
+        },
+        "feedback": {
+          "type": "string",
+          "description": "Required when score is 3 or below. 1-5 sentences explaining the issue with context. Omit or set to null if score is 4 or 5."
+        }
+      },
+      "required": ["score"]
+    },
+    "tone_and_empathy": {
+      "type": "object",
+      "description": "Did the agent acknowledge the customer's emotions? Was the tone appropriately warm, professional, and matched to the situation?",
+      "properties": {
+        "score": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = cold, dismissive, or inappropriate tone, 5 = consistently warm, empathetic, and well-matched to the situation"
+        },
+        "feedback": {
+          "type": "string",
+          "description": "Required when score is 3 or below. 1-5 sentences explaining the issue with context. Omit or set to null if score is 4 or 5."
+        }
+      },
+      "required": ["score"]
+    },
+    "clarity_and_communication": {
+      "type": "object",
+      "description": "Was the response easy to understand? Any jargon, ambiguity, or unnecessary complexity? Was the length appropriate?",
+      "properties": {
+        "score": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = confusing, jargon-heavy, or poorly structured, 5 = clear, concise, and well-structured throughout"
+        },
+        "feedback": {
+          "type": "string",
+          "description": "Required when score is 3 or below. 1-5 sentences explaining the issue with context. Omit or set to null if score is 4 or 5."
+        }
+      },
+      "required": ["score"]
+    },
+    "efficiency": {
+      "type": "object",
+      "description": "Could the issue have been resolved in fewer turns? Were unnecessary questions asked or steps repeated?",
+      "properties": {
+        "score": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = significantly drawn out with redundant steps, 5 = resolved as quickly and directly as possible"
+        },
+        "feedback": {
+          "type": "string",
+          "description": "Required when score is 3 or below. 1-5 sentences explaining the issue with context. Omit or set to null if score is 4 or 5."
+        }
+      },
+      "required": ["score"]
+    },
+    "proactivity": {
+      "type": "object",
+      "description": "Did the agent anticipate follow-up questions, offer relevant context, or take steps to prevent future issues?",
+      "properties": {
+        "score": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = purely reactive with no anticipation of needs, 5 = consistently anticipated needs and added meaningful value"
+        },
+        "feedback": {
+          "type": "string",
+          "description": "Required when score is 3 or below. 1-5 sentences explaining the issue with context. Omit or set to null if score is 4 or 5."
+        }
+      },
+      "required": ["score"]
+    },
+    "accuracy": {
+      "type": "object",
+      "description": "Was the information provided by the agent correct and complete?",
+      "properties": {
+        "score": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = significant errors or missing critical information, 5 = all information was correct and complete"
+        },
+        "feedback": {
+          "type": "string",
+          "description": "Required when score is 3 or below. 1-5 sentences explaining the issue with context. Omit or set to null if score is 4 or 5."
+        }
+      },
+      "required": ["score"]
+    },
+    "overall_score": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "A holistic overall score for the interaction. Not a simple average — weight problem resolution and accuracy heavily."
+    },
+    "overall_summary": {
+      "type": "string",
+      "description": "2-4 sentence summary of the interaction's strengths and weaknesses. Always required."
+    }
+  },
+  "required": [
+    "analysis_context",
+    "problem_resolution",
+    "tone_and_empathy",
+    "clarity_and_communication",
+    "efficiency",
+    "proactivity",
+    "accuracy",
+    "overall_score",
+    "overall_summary"
+  ]
+}
