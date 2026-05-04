@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Fresh Desk Analyzer",
-  "description": "Extract tracking numbers, order numbers, order URLs, classify the ticket category, estimate spam likelihood, and generate a summary from customer support tickets",
+  "description": "Extract tracking numbers, order numbers, order URLs, classify the ticket category and group, estimate spam likelihood, and generate a summary from customer support tickets",
   "type": "object",
   "properties": {
     "tracking_number_found": {
@@ -35,22 +35,40 @@
     },
     "category": {
       "type": "string",
-      "description": "Primary ticket category selected from the current dropdown options",
+      "description": "Most specific matching category for the ticket",
       "enum": [
         "Cancellation",
-        "Delivered Not Received",
-        "Delivery Update",
-        "Duty Fee",
-        "Final Sale",
-        "Order Verification Required",
+        "Address Change",
         "Pre Order",
-        "Product Inquiry",
-        "Refund",
+        "Order Verification Required",
+        "Delivery Update",
+        "Delivered Not Received",
+        "Damaged Item",
+        "Wrong Item Received",
         "Return",
+        "Refund",
+        "Final Sale",
+        "Account Inquiry",
+        "Product Inquiry",
+        "Duty Fee",
         "Return Fee",
-        "Legal - DMCA request",
+        "Shipping Fee",
+        "Legal - DMCA Request",
         "Legal - Product Takedown Request",
+        "Legal - Privacy Request",
+        "Other - Job Application / Internship",
+        "Other - Press Inquiry",
+        "Other - Brand Partnerships",
+        "Other - Software Notifications",
         "OTHER"
+      ]
+    },
+    "group": {
+      "type": "string",
+      "description": "High-level group derived from category",
+      "enum": [
+        "Native Checkout Customer Support",
+        "Other Inquiries"
       ]
     },
     "suggested_new_category": {
@@ -75,10 +93,51 @@
     "order_numbers",
     "order_urls",
     "category",
+    "group",
     "spam_likelihood_percentage",
     "summary"
   ],
   "allOf": [
+    {
+      "if": {
+        "properties": {
+          "category": {
+            "enum": [
+              "Cancellation",
+              "Address Change",
+              "Pre Order",
+              "Order Verification Required",
+              "Delivery Update",
+              "Delivered Not Received",
+              "Damaged Item",
+              "Wrong Item Received",
+              "Return",
+              "Refund",
+              "Final Sale",
+              "Account Inquiry",
+              "Product Inquiry",
+              "Duty Fee",
+              "Return Fee",
+              "Shipping Fee"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "group": {
+            "const": "Native Checkout Customer Support"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "group": {
+            "const": "Other Inquiries"
+          }
+        }
+      }
+    },
     {
       "if": {
         "properties": {

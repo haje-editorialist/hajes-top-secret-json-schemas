@@ -1,104 +1,98 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Fresh Desk Analyzer",
-  "description": "Classify customer support tickets into top-level and detail-level categories",
+  "description": "Extract tracking numbers, order numbers, order URLs, classify the ticket category, and generate a summary from customer support tickets",
   "type": "object",
   "properties": {
-    "top_level_categories": {
-      "type": "array",
-      "description": "One or more top-level categories for the ticket",
-      "items": {
-        "type": "string",
-        "enum": [
-          "order",
-          "payment",
-          "shipping",
-          "return",
-          "product",
-          "account",
-          "promo",
-          "fraud",
-          "subscription",
-          "tech",
-          "feedback",
-          "policy",
-          "misc",
-          "legal"
-        ]
-      },
-      "uniqueItems": true,
-      "minItems": 1
+    "tracking_number_found": {
+      "type": "boolean",
+      "description": "Whether any tracking numbers were found in the ticket"
     },
-    "detail_level_categories": {
+    "tracking_numbers": {
       "type": "array",
-      "description": "One or more detail-level categories for the ticket",
+      "description": "Tracking numbers found in the ticket",
       "items": {
-        "type": "string",
-        "enum": [
-          "order_status",
-          "order_change",
-          "order_cancel",
-          "order_not_found",
-          "payment_failed",
-          "payment_declined",
-          "payment_duplicate",
-          "payment_invoice",
-          "shipping_delay",
-          "shipping_lost",
-          "shipping_tracking",
-          "shipping_address_change",
-          "return_request",
-          "exchange_request",
-          "refund_status",
-          "refund_delay",
-          "product_damaged",
-          "product_defective",
-          "product_wrong_item",
-          "product_missing_item",
-          "product_sizing",
-          "product_availability",
-          "product_details",
-          "account_login",
-          "account_reset_password",
-          "account_update",
-          "account_delete",
-          "promo_code_invalid",
-          "promo_not_applied",
-          "price_adjustment",
-          "loyalty_issue",
-          "fraud_unauthorized_charge",
-          "fraud_suspicious_activity",
-          "tech_bug",
-          "tech_checkout_error",
-          "tech_performance",
-          "feedback_complaint",
-          "feedback_praise",
-          "feature_request",
-          "misc_general_question",
-          "misc_unclear_request",
-          "misc_follow_up",
-          "misc_internal_request",
-          "misc_b2b_inquiry",
-          "misc_press_inquiry",
-          "legal_dmca_request",
-          "legal_dmca_notice",
-          "legal_dmca_counter_notice",
-          "legal_copyright_claim",
-          "legal_ip_violation",
-          "legal_pending_review",
-          "legal_validated",
-          "legal_rejected",
-          "legal_action_taken",
-          "legal_escalated"
-        ]
-      },
-      "uniqueItems": true,
-      "minItems": 1
+        "type": "string"
+      }
+    },
+    "order_number_found": {
+      "type": "boolean",
+      "description": "Whether any order numbers were found in the ticket"
+    },
+    "order_numbers": {
+      "type": "array",
+      "description": "Order numbers found in the ticket",
+      "items": {
+        "type": "string"
+      }
+    },
+    "order_urls": {
+      "type": "array",
+      "description": "CMS purchase lookup URLs generated from order numbers",
+      "items": {
+        "type": "string"
+      }
+    },
+    "category": {
+      "type": "string",
+      "description": "Primary ticket category selected from the current dropdown options",
+      "enum": [
+        "Cancellation",
+        "Delivered Not Received",
+        "Delivery Update",
+        "Duty Fee",
+        "Final Sale",
+        "Order Verification Required",
+        "Pre Order",
+        "Product Inquiry",
+        "Refund",
+        "Return",
+        "Return Fee",
+        "Legal - DMCA request",
+        "Legal - Product Takedown Request",
+        "OTHER"
+      ]
+    },
+    "suggested_new_category": {
+      "type": "string",
+      "description": "If category is OTHER, a short suggested new category label; otherwise an empty string"
+    },
+    "summary": {
+      "type": "string",
+      "description": "A one paragraph summary of the support ticket starting with 'The customer'"
     }
   },
   "required": [
-    "top_level_categories",
-    "detail_level_categories"
+    "tracking_number_found",
+    "tracking_numbers",
+    "order_number_found",
+    "order_numbers",
+    "order_urls",
+    "category",
+    "summary"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "category": {
+            "const": "OTHER"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "suggested_new_category"
+        ],
+        "properties": {
+          "suggested_new_category": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provide a short concrete category suggestion when category is OTHER"
+          }
+        }
+      }
+    }
   ],
   "additionalProperties": false
 }
