@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Fresh Desk Analyzer - Simplified",
+  "description": "Classify a customer support ticket into a category and generate a summary",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "A one paragraph summary of the support ticket starting with 'The customer'"
+    },
+    "category": {
+      "type": "string",
+      "description": "Most specific matching category for the ticket",
+      "enum": [
+        "Cancellation",
+        "Address Change",
+        "Pre Order",
+        "Order Verification Required",
+        "Delivery Update",
+        "Delivered Not Received",
+        "Damaged Item",
+        "Wrong Item Received",
+        "Return",
+        "Refund",
+        "Final Sale",
+        "Account Inquiry",
+        "Product Inquiry",
+        "Duty Fee",
+        "Return Fee",
+        "Shipping Fee",
+        "Legal - DMCA Request",
+        "Legal - Product Takedown Request",
+        "Legal - Privacy Request",
+        "Other - Job Application / Internship",
+        "Other - Press Inquiry",
+        "Other - Brand Partnerships",
+        "Other - Software Notifications",
+        "OTHER"
+      ]
+    },
+    "suggested_new_category": {
+      "type": "string",
+      "description": "If category is OTHER, a short suggested new category label. Otherwise empty string."
+    }
+  },
+  "required": [
+    "summary",
+    "category",
+    "suggested_new_category"
+  ],
+  "additionalProperties": false
+}
