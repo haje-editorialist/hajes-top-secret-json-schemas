@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Freshdesk Agent Analyzer v9",
+  "description": "Evaluate support agent quality using five scoring dimensions, language/grammar QA, team-level feedback, and ticket metadata extraction from a full conversation transcript.",
+  "type": "object",
+  "properties": {
+    "analysis_context": {
+      "type": "object",
+      "description": "Context flags that help interpret the scores.",
+      "properties": {
+        "ticket_was_merged": {
+          "type": "boolean",
+          "description": "True when the transcript explicitly indicates this ticket was merged into another ticket or thread."
+        },
+        "merge_only_interaction": {
+          "type": "boolean",
+          "description": "True when the transcript is mostly merge/system-routing activity with little or no agent-customer handling to evaluate."
+        }
+      },
+      "required": ["ticket_was_merged", "merge_only_interaction"]
+    },
+    "ticket_metadata": {
+      "type": "object",
+      "description": "Structured ticket details extracted only from explicit transcript evidence.",
+      "properties": {
+        "ticket_started_date": {
+          "type": ["string", "null"],
+          "description": "Original ticket open time from the transcript. Use the exact date-time string found in the transcript. If unavailable, return null."
+        },
+        "ticket_closed_date": {
+          "type": ["string", "null"],
+          "description": "Last touch / close time from the transcript. Use the exact date-time string found in the transcript. If unavailable, return null."
+        },
+        "agents_who_worked_on_ticket": {
+          "type": "array",
+          "description": "First names of all support agents who handled the ticket based on explicit evidence. Return an empty array if none are identifiable.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "customer_name": {
+          "type": ["string", "null"],
+          "description": "Customer first name only when explicitly present in the transcript. If unavailable, return null."
+        },
+        "number_of_interactions": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of interaction turns in the transcript."
+        }
+      },
+      "required": [
+        "ticket_started_date",
+        "ticket_closed_date",
+        "agents_who_worked_on_ticket",
+        "customer_name",
+        "number_of_interactions"
+      ]
+    },
+    "scores": {
+      "type": "object",
+      "description": "Quality scores on a 1-5 scale.",
+      "properties": {
+        "problem_resolved": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = issue unresolved or mishandled, 5 = issue clearly resolved with no meaningful loose ends"
+        },
+        "tone_and_empathy": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = cold/dismissive, 5 = consistently warm, respectful, and empathetic"
+        },
+        "clarity": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = confusing or hard to follow, 5 = clear, concise, and easy to understand"
+        },
+        "grammar_and_spelling": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = frequent errors that harm readability, 5 = polished and error-free writing in agent messages. Ignore redaction artifacts containing the token 'censored'. Do not penalize long paragraph length alone when line breaks/HTML have been normalized away. Do not treat factual mistakes (for example wrong city/state/ZIP or incorrect order facts) as grammar errors."
+        },
+        "overall_quality": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Holistic quality score. Not a strict average. Weight problem_resolved most heavily."
+        }
+      },
+      "required": [
+        "problem_resolved",
+        "tone_and_empathy",
+        "clarity",
+        "grammar_and_spelling",
+        "overall_quality"
+      ]
+    },
+    "language_and_grammar_feedback": {
+      "type": ["string", "null"],
+      "description": "Grammar/spelling feedback only for support-team messages, never customer messages. If there are no agent-side grammar/spelling issues, return null. Ignore artifacts introduced by data redaction/masking (for example tokens containing 'censored', including malformed email/web fragments like 'shop@:censored' or 'w::censored'). Do not give feedback solely because paragraphs are long when formatting was flattened by preprocessing. Exclude factual correctness issues (for example wrong city/state/ZIP/order facts) from this field."
+    },
+    "overall_feedback_for_customer_support_team": {
+      "type": ["string", "null"],
+      "description": "Actionable team-level feedback in 1-3 sentences. Focus on what should be improved. Include material factual/detail errors from agent replies (for example wrong city/state/ZIP/order facts) when present. If no meaningful improvement is needed, return null."
+    }
+  },
+  "required": [
+    "analysis_context",
+    "ticket_metadata",
+    "scores",
+    "language_and_grammar_feedback",
+    "overall_feedback_for_customer_support_team"
+  ]
+}
