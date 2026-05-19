@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Editorialist Instagram UGC Fashion Description",
+  "description": "Schema for describing fashion items and accessories in Instagram UGC images for search and tagging.",
+  "type": "object",
+  "properties": {
+    "short_description": {
+      "type": "string",
+      "description": "A 5-7 word concise, keyword-rich description of the image as a whole."
+    },
+    "people": {
+      "type": "array",
+      "description": "List of people detected in the image, each with their visible clothing and accessories.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "person_index": {
+            "type": "integer",
+            "description": "Index of the person in the image (starting from 1)."
+          },
+          "items": {
+            "type": "array",
+            "description": "List of visible clothing items and accessories for this person.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "garment_type": { "type": "string", "description": "Type of garment or accessory (e.g., cropped top, sunglasses, tote bag)." },
+                "colors": { "type": "array", "items": { "type": "string" }, "description": "Main color(s) of the item." },
+                "fabric_material": { "type": "string", "description": "Fabric or material (e.g., cotton, leather, denim, silk)." },
+                "cut_silhouette": { "type": "string", "description": "Cut or silhouette (e.g., oversized, fitted, cropped, wide-leg)." },
+                "details": { "type": "string", "description": "Notable details (e.g., textured, minimalist, embroidered, logo, hardware)." },
+                "accessories": { "type": "string", "description": "Accessory details if relevant (e.g., gold chain, tortoiseshell frame)." },
+                "brand": { "type": ["string", "null"], "description": "Brand name if clearly visible, else null." }
+              },
+              "required": ["garment_type", "colors", "fabric_material", "cut_silhouette", "details", "accessories", "brand"]
+            }
+          }
+        },
+        "required": ["person_index", "items"]
+      }
+    }
+  },
+  "required": ["short_description", "people"]
+}
