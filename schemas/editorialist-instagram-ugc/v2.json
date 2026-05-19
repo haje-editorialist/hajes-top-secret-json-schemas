@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Editorialist Instagram UGC Fashion Description v2",
+  "description": "Simplified schema for describing Instagram UGC images for search and tagging.",
+  "type": "object",
+  "properties": {
+    "short_description": {
+      "type": "string",
+      "description": "A 5-7 word concise, keyword-rich description of the image as a whole."
+    },
+    "people_description": {
+      "type": "string",
+      "description": "Concise, keyword-rich description of the people in the image (e.g., number, gender, age group, style cues)."
+    },
+    "items_description": {
+      "type": "string",
+      "description": "Concise, keyword-rich description of all visible clothing items, accessories, and notable fashion details in the image."
+    }
+  },
+  "required": ["short_description", "people_description", "items_description"]
+}
