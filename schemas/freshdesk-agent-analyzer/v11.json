@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Freshdesk Agent Analyzer v11",
+  "description": "Same shape as v10. v11 prompts add labels distinguishing [PUBLIC REPLY] from [INTERNAL NOTE] conversations, so internal notes are used for context only and never graded for tone/grammar/clarity.",
+  "type": "object",
+  "properties": {
+    "analysis_context": {
+      "type": "object",
+      "description": "Classification and evaluability flags that determine how the ticket should be scored.",
+      "properties": {
+        "ticket_type": {
+          "type": "string",
+          "enum": ["normal", "trustpilot", "merged"],
+          "description": "Ticket classification. 'trustpilot' when the sender is @trustpilot.com AND a star-rating phrase is present. 'merged' when the transcript explicitly indicates the ticket was merged. 'normal' otherwise."
+        },
+        "evaluable_agent_interaction": {
+          "type": "boolean",
+          "description": "True only when the transcript contains meaningful agent activity that can be evaluated. False for merge-only, no-response, automated-notification, or spam tickets."
+        },
+        "agent_response_was_needed": {
+          "type": "boolean",
+          "description": "True when the situation required an agent response. False for routine merges, automated notifications, and spam that legitimately need no reply."
+        }
+      },
+      "required": ["ticket_type", "evaluable_agent_interaction", "agent_response_was_needed"]
+    },
+    "ticket_metadata": {
+      "type": "object",
+      "description": "Structured ticket details extracted only from explicit transcript evidence.",
+      "properties": {
+        "agents_who_worked_on_ticket": {
+          "type": "array",
+          "description": "First names of agents who handled the ticket based on explicit evidence. Empty array if none identifiable.",
+          "items": { "type": "string" }
+        },
+        "customer_name": {
+          "type": ["string", "null"],
+          "description": "Customer first name only when explicitly present. Null otherwise."
+        },
+        "number_of_interactions": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of interaction turns in the transcript."
+        },
+        "trustpilot_score": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 5,
+          "description": "TrustPilot star rating (1-5) extracted from the email body (for example 'left a new 3-star review' → 3). Null for non-TrustPilot tickets or when not present."
+        }
+      },
+      "required": [
+        "agents_who_worked_on_ticket",
+        "customer_name",
+        "number_of_interactions",
+        "trustpilot_score"
+      ]
+    },
+    "scores": {
+      "type": "object",
+      "description": "Quality scores on a 1-5 scale. Any score may be null when the dimension is not applicable for this ticket (see system prompt for the policy matrix).",
+      "properties": {
+        "problem_resolved": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Always null for ticket_type=trustpilot (tracked separately). For normal/merged: scored 1-5 when evaluable; 5 when not evaluable and no response was needed; 1 when not evaluable but a response was needed."
+        },
+        "tone_and_empathy": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = cold/dismissive, 5 = consistently warm and empathetic. Null when there is no agent/brand reply to evaluate."
+        },
+        "clarity": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = confusing, 5 = clear and easy to follow. Null when there is no agent/brand reply to evaluate."
+        },
+        "grammar_and_spelling": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = frequent errors, 5 = polished. Ignore preprocessing artifacts (greeting-comma spacing, word-splitting, redaction tokens). Do not treat factual mistakes as grammar errors. Null when there is no agent/brand reply to evaluate."
+        },
+        "overall_quality": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Holistic quality score weighted toward problem_resolved (when not null). Null when there is no agent/brand reply to evaluate."
+        }
+      },
+      "required": [
+        "problem_resolved",
+        "tone_and_empathy",
+        "clarity",
+        "grammar_and_spelling",
+        "overall_quality"
+      ]
+    },
+    "language_and_grammar_feedback": {
+      "type": ["string", "null"],
+      "description": "Grammar/spelling feedback only for agent/brand messages, never customer messages. Exclude preprocessing artifacts (tokens containing 'censored', greeting-punctuation spacing like 'Hi NAME ,', word-splitting like 'fee s'), factual mistakes, and internal-note leakage. Return null when no genuine agent-side issues remain."
+    },
+    "overall_feedback_for_customer_support_team": {
+      "type": ["string", "null"],
+      "description": "Actionable team-level feedback in 1-3 sentences. Include factual/detail errors, internal-note leakage in customer-visible threads, and process issues (missed follow-ups, contradictory updates, premature closures). Null only when there is genuinely no meaningful improvement to suggest."
+    }
+  },
+  "required": [
+    "analysis_context",
+    "ticket_metadata",
+    "scores",
+    "language_and_grammar_feedback",
+    "overall_feedback_for_customer_support_team"
+  ]
+}
