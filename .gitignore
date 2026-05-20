@@ -11,3 +11,4 @@ schemas/*/*.markdown
 **/.DS_Store
 .ds_store
 schemas/freshdesk-agent-analyzer/old tickets.csv
+schemas/freshdesk-agent-analyzer/backfill/*
