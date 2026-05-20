@@ -28,14 +28,6 @@
       "type": "object",
       "description": "Structured ticket details extracted only from explicit transcript evidence.",
       "properties": {
-        "ticket_started_date": {
-          "type": ["string", "null"],
-          "description": "Original ticket open time as found in the transcript. Null if not explicit."
-        },
-        "ticket_closed_date": {
-          "type": ["string", "null"],
-          "description": "Last touch / close time as found in the transcript. Null if not explicit."
-        },
         "agents_who_worked_on_ticket": {
           "type": "array",
           "description": "First names of agents who handled the ticket based on explicit evidence. Empty array if none identifiable.",
@@ -58,8 +50,6 @@
         }
       },
       "required": [
-        "ticket_started_date",
-        "ticket_closed_date",
         "agents_who_worked_on_ticket",
         "customer_name",
         "number_of_interactions",
