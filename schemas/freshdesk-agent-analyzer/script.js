@@ -65,6 +65,18 @@ export default async function main({inputData}) {
       .trim();
   };
 
+  // Open-to-close duration in hours (tenths). Only computed for resolved (4)
+  // or closed (5) tickets — for open/pending tickets, updated_at is the most
+  // recent activity rather than a true close time, so we return null.
+  const computeOpenToCloseHours = (created, updated, status) => {
+    if (!created || !updated) return null;
+    if (status !== 4 && status !== 5) return null;
+    const start = new Date(created);
+    const end = new Date(updated);
+    if (isNaN(start) || isNaN(end)) return null;
+    return Math.round(((end - start) / 3600000) * 10) / 10;
+  };
+
   // Parse conversations
   const conversations = (ticketData.conversations || []).map(conv => ({
     conversationId: conv.id || null,
@@ -91,6 +103,7 @@ export default async function main({inputData}) {
     ticketSource: ticketData.source || null,
     ticketType: ticketData.type || null,
     cleanedDescription: cleanDescription(ticketData.description || ''),
+    timeFromOpenToCloseHours: computeOpenToCloseHours(ticketData.created_at, ticketData.updated_at, ticketData.status),
     conversations: conversations
   };
 }
