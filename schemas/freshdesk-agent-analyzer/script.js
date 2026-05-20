@@ -77,16 +77,21 @@ export default async function main({inputData}) {
     return Math.round(((end - start) / 3600000) * 10) / 10;
   };
 
-  // Parse conversations
-  const conversations = (ticketData.conversations || []).map(conv => ({
-    conversationId: conv.id || null,
-    conversationAuthor: conv.user ? (conv.user.name || conv.user.email || null) : (conv.actor_name || null),
-    conversationBody: cleanDescription(conv.body || ''),
-    conversationSource: conv.source || null,
-    conversationPrivate: conv.private || false,
-    conversationCreatedAt: conv.created_at || null,
-    conversationUpdatedAt: conv.updated_at || null
-  }));
+  // Parse conversations — keep both public replies and internal notes, but
+  // prefix each body with a label so the v11 prompt can distinguish them.
+  // The AI uses [INTERNAL NOTE] entries for context only, not for grading.
+  const conversations = (ticketData.conversations || []).map(conv => {
+    const label = conv.private ? '[INTERNAL NOTE]' : '[PUBLIC REPLY]';
+    return {
+      conversationId: conv.id || null,
+      conversationAuthor: conv.user ? (conv.user.name || conv.user.email || null) : (conv.actor_name || null),
+      conversationBody: label + '\n' + cleanDescription(conv.body || ''),
+      conversationSource: conv.source || null,
+      conversationPrivate: conv.private || false,
+      conversationCreatedAt: conv.created_at || null,
+      conversationUpdatedAt: conv.updated_at || null
+    };
+  });
 
   // Extract relevant fields from the ticket data
   return {
