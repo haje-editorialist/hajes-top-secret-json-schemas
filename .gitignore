@@ -5,6 +5,9 @@ action-items-prompt.md
 schemas/*/prompts.md
 schemas/*/*.md
 schemas/*/*.markdown
+schemas/**/*.systemprompt.md
+schemas/**/*.userprompt.md
+schemas/**/prompts.md
 
 # macOS
 .DS_Store
