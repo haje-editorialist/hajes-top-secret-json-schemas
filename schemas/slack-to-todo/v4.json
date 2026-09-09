@@ -1,0 +1,40 @@
+{
+  "title": "SlackToTodo",
+  "description": "Extract a structured todo entry from a saved Slack message",
+  "type": "object",
+  "properties": {
+    "short_description": {
+      "type": "string",
+      "description": "4 to 10 words describing the core todo. Shape by todo_type: Action for Haje = imperative verb phrase with Haje as implied subject; Waiting on someone else = start with first name and what they owe; Reference = plain noun phrase."
+    },
+    "long_description": {
+      "type": "string",
+      "description": "Neutral factual summary (max 200 words): who sent it, where it came from, what is requested, key facts, deadlines, and implied actions."
+    },
+    "todo_type": {
+      "type": "string",
+      "description": "Who performs the next physical act.",
+      "enum": [
+        "Action for Haje",
+        "Waiting on someone else",
+        "Reference"
+      ]
+    },
+    "waiting_on_person": {
+      "type": "string",
+      "description": "First name only when todo_type is 'Waiting on someone else'. Empty string otherwise."
+    },
+    "claude_prompt": {
+      "type": "string",
+      "description": "Ready-to-paste instruction for a separate Claude session to perform the required work from this message."
+    }
+  },
+  "required": [
+    "short_description",
+    "long_description",
+    "todo_type",
+    "waiting_on_person",
+    "claude_prompt"
+  ],
+  "additionalProperties": false
+}
