@@ -5,7 +5,7 @@
   "properties": {
     "short_description": {
       "type": "string",
-      "description": "4 to 10 words describing the core todo. Shape by todo_type: Action for Haje = imperative verb phrase with Haje as implied subject; Waiting on someone else = start with first name and what they owe; Reference = plain noun phrase."
+      "description": "6 to 15 words describing the core todo. Shape by todo_type: Action for Haje = imperative verb phrase with Haje as implied subject; Waiting on someone else = start with first name and what they owe; Reference = plain noun phrase."
     },
     "long_description": {
       "type": "string",
