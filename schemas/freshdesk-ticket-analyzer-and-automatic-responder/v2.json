@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Freshdesk Ticket Analyzer and Automatic Responder",
+  "description": "Analyze a complete Freshdesk support thread, produce an agent-ready thread briefing, classify intent, draft a response, and identify high-certainty first-message order-status requests.",
+  "type": "object",
+  "properties": {
+    "agent_briefing": {
+      "type": "string",
+      "description": "A sectioned briefing for the next agent. It must use these section headers in order: <strong>CONTEXT:</strong>, <strong>TICKET STATE:</strong> (omit only when the latest customer reply is also the first message in the thread), <strong>LATEST REPLY:</strong>, <strong>OPEN QUESTIONS:</strong> (omit when none), <strong>LIKELY NEXT ACTION:</strong>. Keep total briefing under 200 words."
+    },
+    "category": {
+      "type": "string",
+      "description": "Most specific matching category for the ticket.",
+      "enum": [
+        "Cancellation",
+        "Address Change",
+        "Pre Order",
+        "Order Verification Required",
+        "Delivery Update",
+        "Delivered Not Received",
+        "Damaged Item",
+        "Wrong Item Received",
+        "Return",
+        "Refund",
+        "Final Sale",
+        "Account Inquiry",
+        "Product Inquiry",
+        "Duty Fee",
+        "Return Fee",
+        "Shipping Fee",
+        "Legal - DMCA Request",
+        "Legal - Product Takedown Request",
+        "Legal - Privacy Request",
+        "Other - Job Application / Internship",
+        "Other - Press Inquiry",
+        "Other - Brand Partnerships",
+        "Other - Software Notifications",
+        "OTHER"
+      ]
+    },
+    "suggested_new_category": {
+      "type": "string",
+      "description": "If category is OTHER, a short proposed label. Otherwise an empty string."
+    },
+    "draft_customer_response": {
+      "type": "string",
+      "description": "A ready-to-send customer-facing response draft based only on explicit evidence in the thread."
+    },
+    "is_high_certainty_first_message_order_status_request": {
+      "type": "boolean",
+      "description": "True only with very high certainty that this is the customer's first and only message in the thread and they are asking for order status, tracking number, or where the order is. Must be false for return or cancellation requests."
+    }
+  },
+  "required": [
+    "agent_briefing",
+    "category",
+    "suggested_new_category",
+    "draft_customer_response",
+    "is_high_certainty_first_message_order_status_request"
+  ],
+  "additionalProperties": false
+}
