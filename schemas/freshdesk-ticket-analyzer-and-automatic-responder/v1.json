@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Freshdesk Ticket Analyzer and Automatic Responder",
+  "description": "Analyze a Freshdesk ticket thread, classify intent, summarize it, draft a customer-facing response, and identify high-certainty first-message order-status inquiries.",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "A concise one-paragraph summary that starts with 'The customer'."
+    },
+    "category": {
+      "type": "string",
+      "description": "Most specific matching category for the ticket.",
+      "enum": [
+        "Cancellation",
+        "Address Change",
+        "Pre Order",
+        "Order Verification Required",
+        "Delivery Update",
+        "Delivered Not Received",
+        "Damaged Item",
+        "Wrong Item Received",
+        "Return",
+        "Refund",
+        "Final Sale",
+        "Account Inquiry",
+        "Product Inquiry",
+        "Duty Fee",
+        "Return Fee",
+        "Shipping Fee",
+        "Legal - DMCA Request",
+        "Legal - Product Takedown Request",
+        "Legal - Privacy Request",
+        "Other - Job Application / Internship",
+        "Other - Press Inquiry",
+        "Other - Brand Partnerships",
+        "Other - Software Notifications",
+        "OTHER"
+      ]
+    },
+    "suggested_new_category": {
+      "type": "string",
+      "description": "If category is OTHER, a short proposed label. Otherwise an empty string."
+    },
+    "draft_customer_response": {
+      "type": "string",
+      "description": "A ready-to-send customer-facing response draft based only on explicit evidence in the thread."
+    },
+    "is_high_certainty_first_message_order_status_request": {
+      "type": "boolean",
+      "description": "True only with very high certainty that this is the customer's first and only message in the thread and they are asking for order status, tracking number, or where the order is. Must be false for return or cancellation requests."
+    }
+  },
+  "required": [
+    "summary",
+    "category",
+    "suggested_new_category",
+    "draft_customer_response",
+    "is_high_certainty_first_message_order_status_request"
+  ],
+  "additionalProperties": false
+}
