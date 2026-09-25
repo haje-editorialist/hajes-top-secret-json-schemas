@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Freshdesk Ticket Auto Responder",
+  "description": "Classify new inbound Freshdesk tickets, return automation-ready routing metadata, and generate a customer-facing reply text.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "Freshdesk-style ticket type classification. For auto-reply categories, use exact values: status -> 'Where is my order?', cancellation -> 'Cancellation', return -> 'Return'."
+    },
+    "category": {
+      "type": "string",
+      "description": "Single classification for the ticket.",
+      "enum": [
+        "status",
+        "cancellation",
+        "return",
+        "none"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "description": "One short sentence explaining the classification based on explicit evidence."
+    },
+    "tags_to_add": {
+      "type": "array",
+      "description": "Tags to apply for automation routing. Empty when no auto-reply should be sent.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "should_auto_reply": {
+      "type": "boolean",
+      "description": "True only when the message is safe for auto-reply using one of the supported templates."
+    },
+    "reply_template_key": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Template selector for downstream automation.",
+      "enum": [
+        "status",
+        "cancellation",
+        "return",
+        null
+      ]
+    },
+    "reply_text": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Final customer-facing reply body as Freshdesk-native HTML. Use <div>...</div> for each paragraph and insert <div><br></div> between paragraphs as spacers. Use <a href=\"...\">...</a> for links. Required when should_auto_reply is true; null when should_auto_reply is false."
+    },
+    "ticket_status_to_set": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Freshdesk status to set after auto-reply. Null when no auto-reply should be sent.",
+      "enum": [
+        "Resolved",
+        null
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Classifier confidence from 0 to 100."
+    },
+    "do_not_auto_reply_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Short reason when should_auto_reply is false. Null when should_auto_reply is true."
+    }
+  },
+  "required": [
+    "type",
+    "category",
+    "reason",
+    "tags_to_add",
+    "should_auto_reply",
+    "reply_template_key",
+    "reply_text",
+    "ticket_status_to_set",
+    "confidence",
+    "do_not_auto_reply_reason"
+  ],
+  "additionalProperties": false
+}
