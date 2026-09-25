@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Freshdesk Ticket Analyzer and Automatic Responder",
+  "description": "Classify new inbound Freshdesk tickets for auto-responder routing into status, cancellation, return, or none with a short reason.",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "Single classification for this ticket.",
+      "enum": [
+        "status",
+        "cancellation",
+        "return",
+        "none"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "description": "One short sentence explaining why the category was chosen."
+    }
+  },
+  "required": [
+    "category",
+    "reason"
+  ],
+  "additionalProperties": false
+}
