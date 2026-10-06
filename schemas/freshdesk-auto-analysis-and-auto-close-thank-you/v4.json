@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Freshdesk Auto Analysis And Auto Close Thank You",
+  "description": "Summarize a support thread for an agent, focusing on the latest customer reply, unresolved asks, the likely next action, and the ticket classification. Use only the explicit enum values listed below.",
+  "type": "object",
+  "properties": {
+    "context": {
+      "type": "string",
+      "description": "One-line context covering the order number, item, value, and original reason the ticket exists. Use 'Not stated.' when a detail is unavailable."
+    },
+    "ticket_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "Cancellation",
+        "Address Change",
+        "Pre Order",
+        "Address Verification Required",
+        "Order Verification Required",
+        "Size Verification Required",
+        "Where is my order?",
+        "Delivery Update",
+        "Delivered Not Received",
+        "Damaged Item",
+        "Wrong Item Received",
+        "Return",
+        "Refund",
+        "Final Sale",
+        "Account Inquiry",
+        "Product Inquiry",
+        "Duty Fee",
+        "Return Fee",
+        "Shipping Fee",
+        "Customer Feedback and complaints",
+        "Legal - DMCA request",
+        "Legal - Product Takedown Request",
+        "Legal - Privacy Request",
+        "Finance - Disputed transaction",
+        "Other - Job Application / Internship",
+        "Other - Press Inquiry",
+        "Other - Brand Partnerships",
+        "Other - Software Notifications",
+        "Other - Inbound newsletter",
+        "Other - Inbound marketing (maybe spam)",
+        "OTHER",
+        "Internal Task"
+      ],
+      "description": "The single best-supported ticket type. Use these decision rules instead of guessing: Cancellation = cancel or stop shipment; Address Change = change shipping address; Pre Order = confirm or cancel a pre-order; Address Verification Required = replying to an address verification email; Order Verification Required = replying to an order verification email; Size Verification Required = replying to a size verification email; Where is my order? = asks for order status or ETA; Delivery Update = carrier or partner shipping status update; Delivered Not Received = delivery marked delivered but missing; Damaged Item = damaged/defective item; Wrong Item Received = wrong item/size/color/quantity; Return = wants to send an item back or needs a return label; Refund = refund status or amount after return/cancel; Final Sale = customer is responding to a final-sale confirmation; Account Inquiry = account login/preferences; Product Inquiry = pre-purchase product question; Duty Fee = customs/import/tax question; Return Fee = fee deducted from return; Shipping Fee = shipping cost dispute; Customer Feedback and complaints = general feedback or complaints; Legal - DMCA request / Legal - Product Takedown Request / Legal - Privacy Request = legal requests; Finance - Disputed transaction = payment disputes; Other - Job Application / Internship / Other - Press Inquiry / Other - Brand Partnerships / Other - Software Notifications / Other - Inbound newsletter / Other - Inbound marketing (maybe spam) = specific non-order categories; OTHER = clear but fits none of the above; Internal Task = agent-only manual classification. If the thread does not clearly support one, use null instead of guessing."
+    },
+    "priority": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "enum": [
+        1,
+        2,
+        3
+      ],
+      "description": "Freshdesk numeric priority. 1 = Low, 2 = Medium, 3 = High. Use null when the ticket type is null or no confident priority can be assigned."
+    },
+    "ticket_state": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The current status of the ticket as of the most recent message, written in present tense and covering the most recent agent action, what the customer was told to expect, and elapsed time since the last agent activity. Null when the latest customer message is the first message in the thread."
+    },
+    "latest_reply": {
+      "type": "string",
+      "description": "One to two sentences describing what the customer just said and what they appear to want from this specific reply."
+    },
+    "open_questions": {
+      "type": "array",
+      "description": "Every question or request the customer has raised anywhere in the thread that no agent has answered. Empty array if none.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "likely_next_action": {
+      "type": "string",
+      "description": "The single most likely correct response to the latest reply. Be concrete about what to confirm, ask, or resolve."
+    },
+    "can_auto_close": {
+      "type": "boolean",
+      "description": "True only when the latest customer reply is basically a thank-you or equivalent closing acknowledgement after the issue appears resolved. When in doubt, false."
+    },
+    "auto_close_reason": {
+      "type": "string",
+      "description": "A short summary of why the ticket can or cannot be auto-closed."
+    }
+  },
+  "required": [
+    "context",
+    "ticket_type",
+    "priority",
+    "ticket_state",
+    "latest_reply",
+    "open_questions",
+    "likely_next_action",
+    "can_auto_close",
+    "auto_close_reason"
+  ],
+  "additionalProperties": false
+}
