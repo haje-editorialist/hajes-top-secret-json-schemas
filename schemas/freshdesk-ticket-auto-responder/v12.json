@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Freshdesk Ticket Auto Responder",
+  "description": "v12. Classify new inbound Freshdesk tickets and return routing metadata. The model no longer writes reply text; the Zap renders the fixed template from reply_template_key and customer_first_name.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "Freshdesk ticket type. For auto-reply categories use exact values: status -> 'Where is my order?', cancellation -> 'Cancellation', return -> 'Return'."
+    },
+    "category": {
+      "type": "string",
+      "description": "Single classification for the ticket.",
+      "enum": ["status", "cancellation", "return", "none"]
+    },
+    "blockers": {
+      "type": "array",
+      "description": "Every hard blocker present anywhere in the ticket, including quoted emails. Empty array only if none apply. Any entry forces category none.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "preorder_or_final_sale",
+          "deadline_or_event",
+          "tried_self_serve",
+          "no_confirmation_or_charge",
+          "overdue_or_chasing",
+          "replying_to_sourcing_email",
+          "asks_us_to_act",
+          "empty_or_image_only",
+          "multiple_requests",
+          "delivery_problem",
+          "item_problem",
+          "money_question",
+          "angry_or_escalated",
+          "other"
+        ]
+      }
+    },
+    "reason": {
+      "type": "string",
+      "description": "One short sentence explaining the classification, quoting the customer's words where possible."
+    },
+    "tags_to_add": {
+      "type": "array",
+      "description": "Tags for automation routing. Empty when no auto-reply should be sent.",
+      "items": { "type": "string" }
+    },
+    "should_auto_reply": {
+      "type": "boolean",
+      "description": "True only when category is status, cancellation or return AND blockers is empty."
+    },
+    "reply_template_key": {
+      "type": ["string", "null"],
+      "description": "Template selector for the Zap's render step. Null when should_auto_reply is false.",
+      "enum": ["status", "cancellation", "return", null]
+    },
+    "customer_first_name": {
+      "type": ["string", "null"],
+      "description": "Customer's first name exactly as they signed or stated it. Null if not clearly given."
+    },
+    "ticket_status_to_set": {
+      "type": ["string", "null"],
+      "description": "Freshdesk status to set after auto-reply. Null when no auto-reply should be sent.",
+      "enum": ["Resolved", null]
+    },
+    "likely_order_number": {
+      "type": ["string", "integer"],
+      "description": "Most likely order number explicitly mentioned in the ticket, or 0 if none."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Confidence 0 to 100 that the fixed self-serve template fully answers this customer."
+    },
+    "do_not_auto_reply_reason": {
+      "type": ["string", "null"],
+      "description": "Short reason when should_auto_reply is false. Null when true."
+    }
+  },
+  "required": [
+    "type",
+    "category",
+    "blockers",
+    "reason",
+    "tags_to_add",
+    "should_auto_reply",
+    "reply_template_key",
+    "customer_first_name",
+    "ticket_status_to_set",
+    "likely_order_number",
+    "confidence",
+    "do_not_auto_reply_reason"
+  ],
+  "additionalProperties": false
+}
